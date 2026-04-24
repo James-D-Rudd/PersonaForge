@@ -20,9 +20,8 @@ def run_command(cmd):
 
 
 def main():
-    # Create branch from main
-    if not run_command("gh branch create test-branch"):
-        sys.exit(1)
+    # Create branch from main using git
+    run_command("git checkout -b test-branch")
     
     # Create empty file
     run_command("touch mock_agent.yml")
@@ -32,6 +31,12 @@ def main():
     
     # Commit
     run_command("git commit -m 'test commit'")
+    
+    # Push branch to remote
+    run_command("git push -u origin test-branch")
+    
+    # Create pull request using GitHub CLI
+    run_command("gh pr create --title 'test commit' --body 'Test PR for test-branch' --base main --head test-branch")
     
     print("Branch created and file committed successfully!")
 
