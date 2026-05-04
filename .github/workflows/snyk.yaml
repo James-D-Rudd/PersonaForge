@@ -1,0 +1,13 @@
+name: Snyk Security Scan
+on: [push, pull_request]
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/setup@9adf32b1121593767fc3c057af55b55db032dc04
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - run: snyk monitor # Pushes the "snapshot" to your dashboard
