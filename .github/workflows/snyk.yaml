@@ -1,13 +1,50 @@
 name: Snyk Security Scan
-on: [push, pull_request]
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
   snyk:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/setup@9adf32b1121593767fc3c057af55b55db032dc04
+      - name: Checkout repository
+        uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+
+      - name: Setup Python
+        uses: actions/setup-python@c8813ba1bc76ebf779b911ad8ffccbf2e449cb48
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: "pip install poetry==2.4.1 --only-binary :all:"
+
+      - name: Install dependencies
+        env: 
+          POETRY_INSTALLER_ONLY_BINARY: ":all:"
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk@1.1297.3 --ignore-scripts --no-fund --no-audit
+
+      - name: Run Snyk test (generate SARIF)
+        run: |
+          snyk test \
+            --all-projects \
+            --severity-threshold=high \
+            --sarif-file-output=snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - run: snyk monitor # Pushes the "snapshot" to your dashboard
+        continue-on-error: true
+
+      - name: Upload SARIF to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@c559992c9e1f26532debd2f8e64b7b5d6ebfc0ec
+        with:
+          sarif_file: snyk.sarif

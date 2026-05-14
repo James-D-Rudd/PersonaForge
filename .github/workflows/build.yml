@@ -1,19 +1,43 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@c8813ba1bc76ebf779b911ad8ffccbf2e449cb48
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: "pip install poetry==2.4.1 --only-binary :all:"
+
+      - name: Install dependencies
+        env: 
+          POETRY_INSTALLER_ONLY_BINARY: ":all:"
+        run: poetry install --with test
+
+      - name: Run tests with coverage
+        run: poetry run pytest --cov=. --cov-report=xml --junitxml=pytest-report.xml
+
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
+        uses: SonarSource/sonarqube-scan-action@c4447538999e984fe7463a8068a88b784ed06988
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.python.xunit.reportPath=pytest-report.xml
