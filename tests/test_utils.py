@@ -12,8 +12,14 @@ class TestRunCommand:
 
     # TODO make this test something meaningful
     @mock.patch("personaforge.utils.run_command")
-    def test_run_command_success(self, mock_run_command):
-        """Test run_command executes successfully."""
+    def test_run_command_success(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test run_command executes successfully.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = "output"
         result = utils.run_command(["echo", "test"])
 
@@ -21,8 +27,15 @@ class TestRunCommand:
 
     @mock.patch("personaforge.utils.logger")
     @mock.patch("personaforge.utils.subprocess.run")
-    def test_run_command_logs_command(self, mock_subprocess_run, mock_logger):
-        """Test run_command logs command."""
+    def test_run_command_logs_command(
+        self, mock_subprocess_run: mock.MagicMock, mock_logger: mock.MagicMock
+    ) -> None:
+        """Test run_command logs command.
+
+        Args:
+            mock_subprocess_run: Mock for subprocess.run.
+            mock_logger: Mock for logger.
+        """
         mock_subprocess_run.return_value.stdout = "output"
         mock_subprocess_run.return_value.returncode = 0
         utils.run_command(["git", "status"])
@@ -35,8 +48,14 @@ class TestGetOwnerRepo:
     """Tests for get_owner_repo function."""
 
     @mock.patch("personaforge.utils.run_command")
-    def test_get_owner_repo_success(self, mock_run_command):
-        """Test get_owner_repo extracts owner and repo."""
+    def test_get_owner_repo_success(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test get_owner_repo extracts owner and repo.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = (
             "origin git@github.com:testowner/testrepo.git (fetch)"
         )
@@ -46,8 +65,14 @@ class TestGetOwnerRepo:
         assert result.repo == "testrepo"
 
     @mock.patch("personaforge.utils.run_command")
-    def test_get_owner_repo_with_git_extension(self, mock_run_command):
-        """Test get_owner_repo handles .git extension."""
+    def test_get_owner_repo_with_git_extension(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test get_owner_repo handles .git extension.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = (
             "origin https://github.com/testowner/testrepo.git (fetch)"
         )
@@ -57,15 +82,27 @@ class TestGetOwnerRepo:
         assert result.repo == "testrepo"
 
     @mock.patch("personaforge.utils.run_command")
-    def test_get_owner_repo_unexpected_output_raises(self, mock_run_command):
-        """Test get_owner_repo raises on unexpected output."""
+    def test_get_owner_repo_unexpected_output_raises(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test get_owner_repo raises on unexpected output.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = "invalid"
         with pytest.raises(ValueError):
             utils.get_owner_repo()
 
     @mock.patch("personaforge.utils.run_command")
-    def test_get_owner_repo_empty_output_raises(self, mock_run_command):
-        """Test get_owner_repo raises on empty output."""
+    def test_get_owner_repo_empty_output_raises(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test get_owner_repo raises on empty output.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = ""
         with pytest.raises(ValueError):
             utils.get_owner_repo()
@@ -75,8 +112,14 @@ class TestSwitchToBranch:
     """Tests for switch_to_branch function."""
 
     @mock.patch("personaforge.utils.run_command")
-    def test_switch_to_branch_returns_current(self, mock_run_command):
-        """Test switch_to_branch returns current branch."""
+    def test_switch_to_branch_returns_current(
+        self, mock_run_command: mock.MagicMock
+    ) -> None:
+        """Test switch_to_branch returns current branch.
+
+        Args:
+            mock_run_command: Mock for run_command.
+        """
         mock_run_command.return_value = "feature-branch"
         result = utils.switch_to_branch("feature-branch")
 

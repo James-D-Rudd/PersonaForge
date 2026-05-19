@@ -11,8 +11,14 @@ class TestCreateGithubIssue:
     """Tests for create_github_issue function."""
 
     @mock.patch("personaforge.sanitizer.utils.run_command")
-    def test_create_github_issue_success(self, mock_run):
-        """Test create_github_issue creates issue."""
+    def test_create_github_issue_success(
+        self, mock_run: mock.MagicMock
+    ) -> None:
+        """Test create_github_issue creates issue.
+
+        Args:
+            mock_run: Mock for run_command.
+        """
         mock_run.return_value = "https://github.com/testowner/testrepo/issues/456"
         repo_info = models.RepoInfo(owner="testowner", repo="testrepo")
         issue = models.Issue(title="Test", body="Body")
@@ -22,8 +28,14 @@ class TestCreateGithubIssue:
         assert result == 456
 
     @mock.patch("personaforge.sanitizer.utils.run_command")
-    def test_create_github_issue_raises_on_invalid_output(self, mock_run):
-        """Test create_github_issue raises on invalid output."""
+    def test_create_github_issue_raises_on_invalid_output(
+        self, mock_run: mock.MagicMock
+    ) -> None:
+        """Test create_github_issue raises on invalid output.
+
+        Args:
+            mock_run: Mock for run_command.
+        """
         repo_info = models.RepoInfo(owner="testowner", repo="testrepo")
         issue = models.Issue(title="Test", body="Body")
 
@@ -38,8 +50,15 @@ class TestCreateAllGithubIssues:
 
     @mock.patch("personaforge.sanitizer.create_github_issue")
     @mock.patch("personaforge.sanitizer.utils.get_owner_repo")
-    def test_create_all_github_issues(self, mock_get, mock_create):
-        """Test create_all_github_issues creates all issues."""
+    def test_create_all_github_issues(
+        self, mock_get: mock.MagicMock, mock_create: mock.MagicMock
+    ) -> None:
+        """Test create_all_github_issues creates all issues.
+
+        Args:
+            mock_get: Mock for get_owner_repo.
+            mock_create: Mock for create_github_issue.
+        """
         mock_get.return_value = models.RepoInfo(owner="testowner", repo="testrepo")
         mock_create.side_effect = [1, 2, 3]
         issues = [
@@ -54,8 +73,15 @@ class TestCreateAllGithubIssues:
 
     @mock.patch("personaforge.sanitizer.create_github_issue")
     @mock.patch("personaforge.sanitizer.utils.get_owner_repo")
-    def test_create_all_github_issues_empty_list(self, mock_get, mock_create):
-        """Test create_all_github_issues handles empty list."""
+    def test_create_all_github_issues_empty_list(
+        self, mock_get: mock.MagicMock, mock_create: mock.MagicMock
+    ) -> None:
+        """Test create_all_github_issues handles empty list.
+
+        Args:
+            mock_get: Mock for get_owner_repo.
+            mock_create: Mock for create_github_issue.
+        """
         result = sanitizer.create_all_github_issues([])
 
         assert result == []
@@ -64,7 +90,7 @@ class TestCreateAllGithubIssues:
 class TestRunAgenticWeaknessAnalysis:
     """Tests for run_agentic_weakness_analysis function."""
 
-    def test_run_agentic_weakness_analysis(self):
+    def test_run_agentic_weakness_analysis(self) -> None:
         """Test run_agentic_weakness_analysis returns issues."""
         result = sanitizer.run_agentic_weakness_analysis()
 
@@ -77,15 +103,23 @@ class TestLinkIssues:
     """Tests for link_issues function."""
 
     @mock.patch("personaforge.sanitizer.utils.run_command")
-    def test_link_issues(self, mock_run):
-        """Test link_issues executes command."""
+    def test_link_issues(self, mock_run: mock.MagicMock) -> None:
+        """Test link_issues executes command.
+
+        Args:
+            mock_run: Mock for run_command.
+        """
         sanitizer.link_issues([1, 2, 3], 123)
 
         mock_run.assert_called()
 
     @mock.patch("personaforge.sanitizer.utils.run_command")
-    def test_link_issues_empty_list(self, mock_run):
-        """Test link_issues handles empty list."""
+    def test_link_issues_empty_list(self, mock_run: mock.MagicMock) -> None:
+        """Test link_issues handles empty list.
+
+        Args:
+            mock_run: Mock for run_command.
+        """
         sanitizer.link_issues([], 123)
 
         mock_run.assert_not_called()
@@ -102,13 +136,21 @@ class TestMain:
     @mock.patch("personaforge.sanitizer.utils.run_command")
     def test_main(
         self,
-        mock_switch,
-        mock_run,
-        mock_tasks,
-        mock_create,
-        mock_link,
-    ):
-        """Test main orchestrates all steps."""
+        mock_switch: mock.MagicMock,
+        mock_run: mock.MagicMock,
+        mock_tasks: mock.MagicMock,
+        mock_create: mock.MagicMock,
+        mock_link: mock.MagicMock,
+    ) -> None:
+        """Test main orchestrates all steps.
+
+        Args:
+            mock_switch: Mock for switch_to_branch.
+            mock_run: Mock for run_command.
+            mock_tasks: Mock for run_agentic_weakness_analysis.
+            mock_create: Mock for create_all_github_issues.
+            mock_link: Mock for link_issues.
+        """
         pr_info = models.PullRequestInfo(
             branch_name="test-branch",
             file_name="test_file.md",

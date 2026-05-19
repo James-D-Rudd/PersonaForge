@@ -10,8 +10,12 @@ class TestCloseIssue:
     """Tests for close_issue function."""
 
     @mock.patch("personaforge.fidelity_guard.utils.run_command")
-    def test_close_issue(self, mock_run):
-        """Test close_issue executes correct command."""
+    def test_close_issue(self, mock_run: mock.MagicMock) -> None:
+        """Test close_issue executes correct command.
+
+        Args:
+            mock_run: Mock for run_command.
+        """
         repo_info = models.RepoInfo(owner="testowner", repo="testrepo")
         fidelity_guard.close_issue(repo_info, 123)
 
@@ -27,8 +31,15 @@ class TestCloseIssue:
 
     @mock.patch("personaforge.fidelity_guard.utils.run_command")
     @mock.patch("personaforge.fidelity_guard.logger")
-    def test_close_issue_logs_success(self, mock_logger, mock_run):
-        """Test close_issue logs success message."""
+    def test_close_issue_logs_success(
+        self, mock_logger: mock.MagicMock, mock_run: mock.MagicMock
+    ) -> None:
+        """Test close_issue logs success message.
+
+        Args:
+            mock_logger: Mock for logger.
+            mock_run: Mock for run_command.
+        """
         repo_info = models.RepoInfo(owner="testowner", repo="testrepo")
         fidelity_guard.close_issue(repo_info, 456)
 
@@ -40,8 +51,15 @@ class TestMain:
 
     @mock.patch("personaforge.fidelity_guard.close_issue")
     @mock.patch("personaforge.fidelity_guard.utils.get_owner_repo")
-    def test_main(self, mock_get, mock_close):
-        """Test main function executes correctly."""
+    def test_main(
+        self, mock_get: mock.MagicMock, mock_close: mock.MagicMock
+    ) -> None:
+        """Test main function executes correctly.
+
+        Args:
+            mock_get: Mock for get_owner_repo.
+            mock_close: Mock for close_issue.
+        """
         mock_get.return_value = models.RepoInfo(owner="testowner", repo="testrepo")
         fidelity_guard.main(123)
 
@@ -50,8 +68,19 @@ class TestMain:
     @mock.patch("personaforge.fidelity_guard.close_issue")
     @mock.patch("personaforge.fidelity_guard.utils.get_owner_repo")
     @mock.patch("personaforge.fidelity_guard.logger")
-    def test_main_logs_closing(self, mock_logger, mock_close, mock_get):
-        """Test main function logs closing message."""
+    def test_main_logs_closing(
+        self,
+        mock_logger: mock.MagicMock,
+        mock_close: mock.MagicMock,
+        mock_get: mock.MagicMock,
+    ) -> None:
+        """Test main function logs closing message.
+
+        Args:
+            mock_logger: Mock for logger.
+            mock_close: Mock for close_issue.
+            mock_get: Mock for get_owner_repo.
+        """
         mock_get.return_value = models.RepoInfo(owner="testowner", repo="testrepo")
         fidelity_guard.main(789)
 
