@@ -56,6 +56,6 @@ if __name__ == "__main__":
             main(issue_number)
         except Exception as e:
             logger.exception(f"An error occurred: {e}")
-            sys.exit(1)
+            raise
     else:
         logger.error("Usage: python fidelity_guard.py <issue_number>")

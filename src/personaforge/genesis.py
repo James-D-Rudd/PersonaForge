@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
+MAX_ATTEMPTS = 10000
+
 @validate_call(validate_return=True)
 def _branch_exists(branch_name: str) -> bool:
     """Check if a git branch exists.
@@ -36,12 +38,13 @@ def _get_unique_branch_name(base_name: str) -> str:
     if not _branch_exists(base_name):
         return base_name
     
-    counter = 1
-    while True:
+    for counter in range(1, MAX_ATTEMPTS + 1):
         new_name = f"{base_name}_{counter}"
         if not _branch_exists(new_name):
             return new_name
         counter += 1
+    
+    raise RuntimeError("Unable to generate unique branch name")
 
 
 @validate_call(validate_return=True)
@@ -185,3 +188,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         logger.exception(f"Error in __main__: {e}")
+        raise

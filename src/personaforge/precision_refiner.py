@@ -39,5 +39,6 @@ if __name__ == "__main__":
             main(issue_number, branch_name)
         except ValueError as e:
             logger.exception(f"Invalid issue number provided: {e}")
+            raise
     else:
         logger.error("Usage: python precision_refiner.py <issue_number> <branch_name>")

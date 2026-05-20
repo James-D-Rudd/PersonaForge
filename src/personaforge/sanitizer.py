@@ -152,5 +152,6 @@ if __name__ == "__main__":
             main(pr_info)
         except ValueError as e:
             logger.exception(f"Invalid branch name provided: {e}")
+            raise
     else:
         logger.error("Usage: python sanitizer.py <pr_info>")

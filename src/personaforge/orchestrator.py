@@ -104,3 +104,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         logger.exception(f"Error in __main__: {e}")
+        raise
