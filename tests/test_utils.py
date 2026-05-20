@@ -91,7 +91,7 @@ class TestGetOwnerRepo:
             mock_run_command: Mock for run_command.
         """
         mock_run_command.return_value = "invalid"
-        with pytest.raises(ValueError):
+        with pytest.raises(utils.GitOutputError):
             utils.get_owner_repo()
 
     @mock.patch("personaforge.utils.run_command")
@@ -104,7 +104,7 @@ class TestGetOwnerRepo:
             mock_run_command: Mock for run_command.
         """
         mock_run_command.return_value = ""
-        with pytest.raises(ValueError):
+        with pytest.raises(utils.GitOutputError):
             utils.get_owner_repo()
 
 

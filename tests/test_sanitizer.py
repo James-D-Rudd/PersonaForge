@@ -41,7 +41,7 @@ class TestCreateGithubIssue:
 
         mock_run.return_value = "No number here"
 
-        with pytest.raises(RuntimeError):
+        with pytest.raises(sanitizer.IssueExtractionError):
             sanitizer.create_github_issue(repo_info, issue)
 
 

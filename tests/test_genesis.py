@@ -48,7 +48,7 @@ class TestGetPrNumber:
             mock_run: Mock for run_command.
         """
         mock_run.return_value = ""
-        with pytest.raises(RuntimeError):
+        with pytest.raises(genesis.PRCreationError):
             genesis.get_pr_number("test-branch")
 
 
