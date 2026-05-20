@@ -10,6 +10,54 @@ logger = logging.getLogger(__name__)
 
 
 @validate_call(validate_return=True)
+def _branch_exists(branch_name: str) -> bool:
+    """Check if a git branch exists.
+
+    Args:
+        branch_name: The name of the branch to check.
+
+    Returns:
+        bool: True if the branch exists, False otherwise.
+    """
+    result = utils.run_command(["git", "branch", "--list", branch_name])
+    return branch_name in result
+
+
+@validate_call(validate_return=True)
+def _get_unique_branch_name(base_name: str) -> str:
+    """Get a unique branch name by appending incrementing integers if needed.
+
+    Args:
+        base_name: The base branch name to start with.
+
+    Returns:
+        str: A unique branch name that doesn't already exist.
+    """
+    if not _branch_exists(base_name):
+        return base_name
+    
+    counter = 1
+    while True:
+        new_name = f"{base_name}_{counter}"
+        if not _branch_exists(new_name):
+            return new_name
+        counter += 1
+
+
+@validate_call(validate_return=True)
+def make_ai_get_branch_name() -> str:
+    """Generate a unique branch name starting with 'test-branch'.
+
+    If 'test-branch' already exists, appends an incrementing integer
+    (e.g., 'test-branch_1', 'test-branch_2') until a unique name is found.
+
+    Returns:
+        str: A unique branch name.
+    """
+    return _get_unique_branch_name("test-branch")
+
+
+@validate_call(validate_return=True)
 def create_base_context_file() -> str:
     """Create a mock file 'mock_agent.yml' and commit it.
 
@@ -102,11 +150,11 @@ def main() -> models.PullRequestInfo:
 
     This function performs the following steps:
     1. Get the current branch.
-    2. Create a new branch named 'test-branch'.
+    2. Create a new branch with a unique name.
     3. Add a mock file 'mock_agent.yml'.
     4. Commit the changes with the message 'test commit'.
     5. Push the new branch to the remote repository.
-    6. Create a pull request from 'test-branch' to 'main'.
+    6. Create a pull request from the new branch to 'main'.
     7. Switch back to the original branch.
 
     Returns:
@@ -115,7 +163,7 @@ def main() -> models.PullRequestInfo:
     Raises:
         RuntimeError: If the PR number cannot be extracted from the command output.
     """
-    new_branch = "test-branch"
+    new_branch = make_ai_get_branch_name()
     utils.run_command(["git", "branch", new_branch])
 
     current_branch = utils.switch_to_branch(new_branch)
