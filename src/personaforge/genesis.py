@@ -13,6 +13,16 @@ logger = logging.getLogger(__name__)
 MAX_ATTEMPTS = 10000
 
 
+class BranchGenerationError(Exception):
+    """Exception raised when unique branch name cannot be generated."""
+    pass
+
+
+class PRCreationError(Exception):
+    """Exception raised when PR creation fails."""
+    pass
+
+
 @validate_call(validate_return=True)
 def _branch_exists(branch_name: str) -> bool:
     """Check if a git branch exists.
@@ -36,6 +46,9 @@ def _get_unique_branch_name(base_name: str) -> str:
 
     Returns:
         str: A unique branch name that doesn't already exist.
+
+    Raises:
+        BranchGenerationError: If unable to generate a unique branch name.
     """
     if not _branch_exists(base_name):
         return base_name
@@ -46,7 +59,7 @@ def _get_unique_branch_name(base_name: str) -> str:
             return new_name
         counter += 1
 
-    raise RuntimeError("Unable to generate unique branch name")
+    raise BranchGenerationError("Unable to generate unique branch name")
 
 
 @validate_call(validate_return=True)
@@ -89,7 +102,7 @@ def get_pr_number(branch_name: str) -> int:
         int: The pull request number.
 
     Raises:
-        RuntimeError: If the PR number cannot be retrieved.
+        PRCreationError: If the PR number cannot be retrieved.
     """
     logger.info("Getting PR number for %s", branch_name)
     pr_output = utils.run_command(
@@ -108,7 +121,7 @@ def get_pr_number(branch_name: str) -> int:
     pr_number: int = int(pr_output.strip()) if pr_output.strip().isdigit() else 0
 
     if pr_number == 0:
-        raise RuntimeError(f"Failed to create a PR for branch {branch_name}.")
+        raise PRCreationError(f"Failed to create a PR for branch {branch_name}.")
 
     logger.info("PR number is %d", pr_number)
 
@@ -154,7 +167,8 @@ def main() -> models.PullRequestInfo:
         models.PullRequestInfo: An instance containing the branch name, file name, and PR number.
 
     Raises:
-        RuntimeError: If the PR number cannot be extracted from the command output.
+        BranchGenerationError: If unable to generate a unique branch name.
+        PRCreationError: If the PR number cannot be extracted from the command output.
     """
     new_branch = make_ai_get_branch_name()
     utils.run_command(["git", "branch", new_branch])
