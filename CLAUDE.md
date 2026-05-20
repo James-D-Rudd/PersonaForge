@@ -43,7 +43,7 @@ You are an expert Python engineer specializing in agentic, stateless pipelines. 
 
 ### B. Pydantic & Data Integrity
 *   **Model Config**: Use Pydantic v2. Models must be `frozen=True`, `strict=True`, and `extra="forbid"`.
-*   **Validation**: Apply `@validate_call` to public-facing pipeline functions.
+*   **Validation**: Apply `@validate_call(validate_return=True)` to public-facing pipeline functions.
 
 ### C. File Structure
 *   **Code Density**: Keep logic modules under **100 lines of executable code**.

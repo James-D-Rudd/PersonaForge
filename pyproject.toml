@@ -1,11 +1,32 @@
+[tool.poetry]
+name = "personaforge"
+version = "0.1.0"
+description = "PersonaForge project"
+authors = ["James-D-Rudd"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.0"  # Ensure this version meets the strict requirements
+langchain = "^1.0.7"  # Ensure this version includes LCEL/`@tool`
+
+[tool.poetry.group.test.dependencies]
+pytest = "^9.0"
+pytest-cov = "^7.0"
+ruff = "^0.0"      # Use the latest stable version
+mypy = "^1.0"      # Use the latest stable version
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.ruff]
 line-length = 88
 target-version = "py310"
 
 [tool.ruff.lint]
 # E/W: PEP8, F: Pyflakes, I: Isort, N: Naming, D: Docstrings (Google), 
-# ANN: Annotations, UP: Upgrades, B: Bugbear
-select = ["E", "W", "F", "I", "N", "D", "ANN", "UP", "B"]
+# ANN: Annotations, UP: Upgrades, B: Bugbear, G: General, TRY: Try/Except
+select = ["E", "W", "F", "I", "N", "D", "ANN", "UP", "B", "G", "TRY"]
 ignore = []
 
 [tool.ruff.lint.pydocstyle]

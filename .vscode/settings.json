@@ -4,12 +4,12 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.fixAll.ruff": "always",
-            "source.organizeImports.ruff": "always",
-            "source.addTypeAnnotation": "always"
+            "source.organizeImports.ruff": "always"
         }
     },
     "ruff.nativeServer": true,
     "mypy-type-checker.args": [
         "--strict"
-    ]
+    ],
+    "snyk.advanced.autoSelectOrganization": true
 }
