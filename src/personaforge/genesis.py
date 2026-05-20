@@ -1,3 +1,5 @@
+"""Module for creating branches, files, and pull requests."""
+
 import logging
 
 from pydantic import validate_call
@@ -8,8 +10,8 @@ from personaforge import models
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
-
 MAX_ATTEMPTS = 10000
+
 
 @validate_call(validate_return=True)
 def _branch_exists(branch_name: str) -> bool:
@@ -37,22 +39,19 @@ def _get_unique_branch_name(base_name: str) -> str:
     """
     if not _branch_exists(base_name):
         return base_name
-    
+
     for counter in range(1, MAX_ATTEMPTS + 1):
         new_name = f"{base_name}_{counter}"
         if not _branch_exists(new_name):
             return new_name
         counter += 1
-    
+
     raise RuntimeError("Unable to generate unique branch name")
 
 
 @validate_call(validate_return=True)
 def make_ai_get_branch_name() -> str:
     """Generate a unique branch name starting with 'test-branch'.
-
-    If 'test-branch' already exists, appends an incrementing integer
-    (e.g., 'test-branch_1', 'test-branch_2') until a unique name is found.
 
     Returns:
         str: A unique branch name.
@@ -150,15 +149,6 @@ def open_pr(branch_name: str) -> int:
 @validate_call(validate_return=True)
 def main() -> models.PullRequestInfo:
     """Create a branch, add a file, and commit using GitHub CLI.
-
-    This function performs the following steps:
-    1. Get the current branch.
-    2. Create a new branch with a unique name.
-    3. Add a mock file 'mock_agent.yml'.
-    4. Commit the changes with the message 'test commit'.
-    5. Push the new branch to the remote repository.
-    6. Create a pull request from the new branch to 'main'.
-    7. Switch back to the original branch.
 
     Returns:
         models.PullRequestInfo: An instance containing the branch name, file name, and PR number.

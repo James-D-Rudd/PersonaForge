@@ -1,3 +1,5 @@
+"""Module for creating GitHub issues and linking them to pull requests."""
+
 import logging
 import os
 import re
@@ -15,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @validate_call(validate_return=True)
 def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
-    """Create a GitHub issue using GitHub CLI and link it to a PR.
+    """Create a GitHub issue using GitHub CLI.
 
     Args:
         repo_info: The repository information containing owner and repo.
@@ -122,9 +124,6 @@ def main(pr_info: models.PullRequestInfo) -> None:
 
     Args:
         pr_info: The pull request information containing branch name and file name.
-
-    Raises:
-        ValueError: If the branch name is invalid.
     """
     current_branch = utils.switch_to_branch(pr_info.branch_name)
 

@@ -1,3 +1,5 @@
+"""Utility functions for git operations and command execution."""
+
 import logging
 import subprocess
 
@@ -11,16 +13,13 @@ logger = logging.getLogger(__name__)
 
 @validate_call(validate_return=True)
 def run_command(command: list[str]) -> str:
-    """Run a shell command.
+    """Run a shell command and return its output.
 
     Args:
         command: The command to run as a list of strings.
 
     Returns:
         str: The output of the command.
-
-    Raises:
-        subprocess.CalledProcessError: If the command execution fails.
     """
     logger.info("Running command: %s", ' '.join(command))
     result = subprocess.run(command, check=True, capture_output=True, text=True)
@@ -53,16 +52,13 @@ def get_owner_repo() -> models.RepoInfo:
 
 @validate_call(validate_return=True)
 def switch_to_branch(branch_name: str) -> str:
-    """Switches to the specified branch and returns the name of the previous branch.
+    """Switch to the specified branch and return the previous branch name.
 
     Args:
         branch_name: The name of the branch to checkout.
 
     Returns:
-        str: A string that is the name of the branch we were on at the start of the function.
-
-    Raises:
-        subprocess.CalledProcessError: If the branch to checkout doesn't exist or if there is an error during the checkout process.
+        str: The name of the branch we were on at the start of the function.
     """
     logger.info("Switching to branch %s", branch_name)
     current_branch = run_command(["git", "branch", "--show-current"])

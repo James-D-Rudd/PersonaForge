@@ -1,3 +1,5 @@
+"""Main orchestrator module for the PersonaForge workflow."""
+
 import logging
 import os
 
@@ -68,9 +70,6 @@ def main() -> None:
     1. Running the 'genesis.py' script to create a branch and commit changes.
     2. Running the 'sanitizer.py' script to create GitHub issues.
     3. Looping over a list of issue numbers and closing each one using 'precision_refiner.py'.
-
-    Returns:
-        None
     """
     logger.info("=" * 50)
     logger.info("MASTER DRIVER - Starting workflow")

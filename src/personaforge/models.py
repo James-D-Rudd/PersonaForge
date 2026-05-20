@@ -10,11 +10,6 @@ class PullRequestInfo(BaseModel):
         branch_name: Name of the branch.
         file_name: Name of the file.
         pr_number: Number of the pull request.
-
-    Example:
-        >>> pri = PullRequestInfo(
-        ...     branch_name="test-branch", file_name="mock_agent.yml", pr_number=1
-        ... )
     """
 
     model_config = {"frozen": True, "strict": True, "extra": "forbid"}
@@ -30,9 +25,6 @@ class RepoInfo(BaseModel):
     Attributes:
         owner: The repository owner.
         repo: The repository name.
-
-    Example:
-        >>> ri = RepoInfo(owner="James-D-Rudd", repo="PersonaForge")
     """
 
     model_config = {"frozen": True, "strict": True, "extra": "forbid"}
@@ -47,9 +39,6 @@ class Issue(BaseModel):
     Attributes:
         title: The issue title.
         body: The issue body content.
-
-    Example:
-        >>> issue = Issue(title="Bug fix", body="Description of the fix")
     """
 
     model_config = {"frozen": True, "strict": True, "extra": "forbid"}

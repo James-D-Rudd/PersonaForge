@@ -1,3 +1,5 @@
+"""Module for closing GitHub issues."""
+
 import logging
 import sys
 
@@ -17,9 +19,6 @@ def close_issue(repo_info: models.RepoInfo, issue_number: int) -> None:
     Args:
         repo_info: The repository information containing owner and repo.
         issue_number: The issue number to close.
-
-    Raises:
-        Exception: If the GitHub CLI command fails.
     """
     utils.run_command(
         [
@@ -38,10 +37,6 @@ def main(issue_number: int) -> None:
 
     Args:
         issue_number: The GitHub issue number to close.
-
-    Raises:
-        ValueError: If the issue number is invalid.
-        Exception: If an error occurs while closing the issue.
     """
     repo_info = utils.get_owner_repo()
     logger.info("Closing issue #%d", issue_number)

@@ -1,3 +1,5 @@
+"""Module for closing GitHub issues after branch operations."""
+
 import logging
 import sys
 
@@ -16,9 +18,6 @@ def main(issue_number: int, branch_name: str) -> None:
     Args:
         issue_number: The GitHub issue number to close.
         branch_name: The name of the branch to work with.
-
-    Raises:
-        ValueError: If the issue number is invalid.
     """
     current_branch = utils.switch_to_branch(branch_name)
 
