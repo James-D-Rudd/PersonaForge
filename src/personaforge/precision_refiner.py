@@ -14,8 +14,8 @@ def main(issue_number: int, branch_name: str) -> None:
     """Call fidelity_guard.py to close an issue.
 
     Args:
-        issue_number (int): The GitHub issue number to close.
-        branch_name (str): The name of the branch to work with.
+        issue_number: The GitHub issue number to close.
+        branch_name: The name of the branch to work with.
 
     Raises:
         ValueError: If the issue number is invalid.

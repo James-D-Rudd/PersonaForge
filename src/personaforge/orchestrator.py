@@ -4,7 +4,7 @@ import os
 from pydantic import validate_call
 
 from personaforge import genesis, precision_refiner, sanitizer, utils
-from personaforge.models import PullRequestInfo  # Ensure this line is present
+from personaforge import models
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -12,7 +12,11 @@ logger = logging.getLogger(__name__)
 
 @validate_call(validate_return=True)
 def get_github_token() -> str | None:
-    """Retrieve the GitHub token from an environment variable."""
+    """Retrieve the GitHub token from an environment variable.
+
+    Returns:
+        str | None: The GitHub token if found, None otherwise.
+    """
     token: str | None = os.getenv("GITHUB_TOKEN")
 
     if not token:
@@ -25,10 +29,10 @@ def get_issues_for_pr(pr_number: int) -> list[int]:
     """Retrieve issue numbers associated with a pull request.
 
     Args:
-        pr_number (int): The pull request number.
+        pr_number: The pull request number.
 
     Returns:
-        List[int]: A list of issue numbers associated with the pull request.
+        list[int]: A list of issue numbers associated with the pull request.
     """
     token: str | None = get_github_token()
 
@@ -73,7 +77,7 @@ def main() -> None:
     logger.info("=" * 50)
 
     logger.info("\n[Step 1] Running genesis.py")
-    pr_info: PullRequestInfo = genesis.main()
+    pr_info: models.PullRequestInfo = genesis.main()
 
     logger.info("\n[Step 2] Running sanitizer.py")
     sanitizer.main(pr_info)

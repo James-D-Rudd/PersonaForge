@@ -3,7 +3,7 @@ import subprocess
 
 from pydantic import validate_call
 
-from personaforge.models import RepoInfo
+from personaforge import models
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ def run_command(command: list[str]) -> str:
     """Run a shell command.
 
     Args:
-        command (list[str]): The command to run as a list of strings.
+        command: The command to run as a list of strings.
 
     Returns:
         str: The output of the command.
@@ -29,11 +29,11 @@ def run_command(command: list[str]) -> str:
 
 
 @validate_call(validate_return=True)
-def get_owner_repo() -> RepoInfo:
+def get_owner_repo() -> models.RepoInfo:
     """Retrieve and sanitize the owner and repo from git remote -v.
 
     Returns:
-        RepoInfo: A struct containing the sanitized owner and repo.
+        models.RepoInfo: A struct containing the sanitized owner and repo.
 
     Raises:
         ValueError: If the output format of `git remote -v` is unexpected.
@@ -48,7 +48,7 @@ def get_owner_repo() -> RepoInfo:
     owner = url_parts[0].split(":")[-1]
     repo = url_parts[-1].replace(".git", "")
     logger.info(f"Retrieved owner: {owner}, repo: {repo}")
-    return RepoInfo(owner=owner, repo=repo)
+    return models.RepoInfo(owner=owner, repo=repo)
 
 
 @validate_call(validate_return=True)
@@ -56,7 +56,7 @@ def switch_to_branch(branch_name: str) -> str:
     """Switches to the specified branch and returns the name of the previous branch.
 
     Args:
-        branch_name (str): The name of the branch to checkout.
+        branch_name: The name of the branch to checkout.
 
     Returns:
         str: A string that is the name of the branch we were on at the start of the function.

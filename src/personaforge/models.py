@@ -1,12 +1,12 @@
 """Pydantic models for PersonaForge pipeline configuration."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class PullRequestInfo(BaseModel):
     """A struct-like class containing branch name, file name, and PR number.
 
-    Args:
+    Attributes:
         branch_name: Name of the branch.
         file_name: Name of the file.
         pr_number: Number of the pull request.
@@ -27,7 +27,7 @@ class PullRequestInfo(BaseModel):
 class RepoInfo(BaseModel):
     """A struct-like class containing repository owner and name.
 
-    Args:
+    Attributes:
         owner: The repository owner.
         repo: The repository name.
 
@@ -44,7 +44,7 @@ class RepoInfo(BaseModel):
 class Issue(BaseModel):
     """A struct-like class containing issue title and body.
 
-    Args:
+    Attributes:
         title: The issue title.
         body: The issue body content.
 

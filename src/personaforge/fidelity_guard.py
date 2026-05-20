@@ -4,18 +4,19 @@ import sys
 from pydantic import validate_call
 
 from personaforge import utils
+from personaforge import models
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 @validate_call(validate_return=True)
-def close_issue(repo_info, issue_number: int) -> None:
+def close_issue(repo_info: models.RepoInfo, issue_number: int) -> None:
     """Close a GitHub issue using GitHub CLI.
 
     Args:
         repo_info: The repository information containing owner and repo.
-        issue_number (int): The issue number to close.
+        issue_number: The issue number to close.
 
     Raises:
         Exception: If the GitHub CLI command fails.
@@ -36,7 +37,7 @@ def main(issue_number: int) -> None:
     """Close an issue.
 
     Args:
-        issue_number (int): The GitHub issue number to close.
+        issue_number: The GitHub issue number to close.
 
     Raises:
         ValueError: If the issue number is invalid.

@@ -7,19 +7,19 @@ import tempfile
 from pydantic import validate_call
 
 from personaforge import utils
-from personaforge.models import Issue, PullRequestInfo, RepoInfo
+from personaforge import models
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 @validate_call(validate_return=True)
-def create_github_issue(repo_info: RepoInfo, issue: Issue) -> int:
+def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
     """Create a GitHub issue using GitHub CLI and link it to a PR.
 
     Args:
-        repo_info (RepoInfo): The repository information containing owner and repo.
-        issue (Issue): The issue containing title and body.
+        repo_info: The repository information containing owner and repo.
+        issue: The issue containing title and body.
 
     Returns:
         int: The created issue number.
@@ -53,7 +53,15 @@ def create_github_issue(repo_info: RepoInfo, issue: Issue) -> int:
 
 
 @validate_call(validate_return=True)
-def create_all_github_issues(issues: list[Issue]) -> list[int]:
+def create_all_github_issues(issues: list[models.Issue]) -> list[int]:
+    """Create multiple GitHub issues.
+
+    Args:
+        issues: A list of issues to create.
+
+    Returns:
+        list[int]: A list of created issue numbers.
+    """
     repo_info = utils.get_owner_repo()
     issue_numbers = []
     for issue in issues:
@@ -65,16 +73,26 @@ def create_all_github_issues(issues: list[Issue]) -> list[int]:
 
 
 @validate_call(validate_return=True)
-def run_agentic_weakness_analysis() -> list[Issue]:
+def run_agentic_weakness_analysis() -> list[models.Issue]:
+    """Run agentic weakness analysis and return a list of issues.
+
+    Returns:
+        list[models.Issue]: A list of issues for the branch.
+    """
     return [
-        Issue(title="Task 1", body="First task issue for the branch"),
-        Issue(title="Task 2", body="Second task issue for the branch"),
+        models.Issue(title="Task 1", body="First task issue for the branch"),
+        models.Issue(title="Task 2", body="Second task issue for the branch"),
     ]
 
 
 @validate_call(validate_return=True)
-def link_issues(issue_numbers, pr_number):
+def link_issues(issue_numbers: list[int], pr_number: int) -> None:
+    """Link issues to a pull request by editing the PR body.
 
+    Args:
+        issue_numbers: A list of issue numbers to link.
+        pr_number: The pull request number to link issues to.
+    """
     # We want the first `Closes` comment to have a few lines between, but the rest should be grouped
     newlines = "\n\n\n"
     for issue_number in issue_numbers:
@@ -99,11 +117,11 @@ def link_issues(issue_numbers, pr_number):
 
 
 @validate_call(validate_return=True)
-def main(pr_info: PullRequestInfo) -> None:
+def main(pr_info: models.PullRequestInfo) -> None:
     """Create GitHub issues for the current branch.
 
     Args:
-        pr_info (PullRequestInfo): The pull request information containing branch name and file name.
+        pr_info: The pull request information containing branch name and file name.
 
     Raises:
         ValueError: If the branch name is invalid.
@@ -130,7 +148,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         logging.basicConfig(level=logging.INFO)
         try:
-            pr_info = PullRequestInfo.model_validate_json(sys.argv[1])
+            pr_info = models.PullRequestInfo.model_validate_json(sys.argv[1])
             main(pr_info)
         except ValueError as e:
             logger.exception(f"Invalid branch name provided: {e}")

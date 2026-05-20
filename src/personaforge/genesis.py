@@ -3,7 +3,7 @@ import logging
 from pydantic import validate_call
 
 from personaforge import utils
-from personaforge.models import PullRequestInfo
+from personaforge import models
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -11,7 +11,11 @@ logger = logging.getLogger(__name__)
 
 @validate_call(validate_return=True)
 def create_base_context_file() -> str:
-    """Create a mock file 'mock_agent.yml' and commit it."""
+    """Create a mock file 'mock_agent.yml' and commit it.
+
+    Returns:
+        str: The name of the created file.
+    """
     filename = "mock_agent.yml"
 
     logger.info(f"Creating mock file {filename}")
@@ -26,6 +30,17 @@ def create_base_context_file() -> str:
 
 @validate_call(validate_return=True)
 def get_pr_number(branch_name: str) -> int:
+    """Get the pull request number for a given branch.
+
+    Args:
+        branch_name: The name of the branch to get the PR number for.
+
+    Returns:
+        int: The pull request number.
+
+    Raises:
+        RuntimeError: If the PR number cannot be retrieved.
+    """
     logger.info(f"Getting PR number for {branch_name}")
     pr_output = utils.run_command(
         [
@@ -55,7 +70,10 @@ def open_pr(branch_name: str) -> int:
     """Push the branch to remote and create a pull request.
 
     Args:
-        branch_name (str): The name of the branch to push and create a PR for.
+        branch_name: The name of the branch to push and create a PR for.
+
+    Returns:
+        int: The pull request number.
     """
     logger.info(f"Pushing branch {branch_name} to remote")
     utils.run_command(["git", "push", "-u", "origin", branch_name])
@@ -79,7 +97,7 @@ def open_pr(branch_name: str) -> int:
 
 
 @validate_call(validate_return=True)
-def main() -> PullRequestInfo:
+def main() -> models.PullRequestInfo:
     """Create a branch, add a file, and commit using GitHub CLI.
 
     This function performs the following steps:
@@ -92,7 +110,7 @@ def main() -> PullRequestInfo:
     7. Switch back to the original branch.
 
     Returns:
-        PullRequestInfo: An instance containing the branch name, file name, and PR number.
+        models.PullRequestInfo: An instance containing the branch name, file name, and PR number.
 
     Raises:
         RuntimeError: If the PR number cannot be extracted from the command output.
@@ -108,7 +126,7 @@ def main() -> PullRequestInfo:
     finally:
         utils.switch_to_branch(current_branch)
 
-    return PullRequestInfo(
+    return models.PullRequestInfo(
         branch_name=new_branch, file_name=file_name, pr_number=pr_number
     )
 
