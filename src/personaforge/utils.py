@@ -11,6 +11,11 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
+class GitOutputError(Exception):
+    """Exception raised when git command output is unexpected."""
+    pass
+
+
 @validate_call(validate_return=True)
 def run_command(command: list[str]) -> str:
     """Run a shell command and return its output.
@@ -35,12 +40,12 @@ def get_owner_repo() -> models.RepoInfo:
         models.RepoInfo: A struct containing the sanitized owner and repo.
 
     Raises:
-        ValueError: If the output format of `git remote -v` is unexpected.
+        GitOutputError: If the output format of `git remote -v` is unexpected.
     """
     output = run_command(["git", "remote", "-v"])
     parts = output.split()
     if len(parts) < 3:
-        raise ValueError("Unexpected output from git remote -v")
+        raise GitOutputError("Unexpected output from git remote -v")
 
     url = parts[1].replace("https://github.com/", "")
     url_parts = url.split("/")

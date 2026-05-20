@@ -15,6 +15,11 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
+class IssueExtractionError(Exception):
+    """Exception raised when issue number extraction fails."""
+    pass
+
+
 @validate_call(validate_return=True)
 def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
     """Create a GitHub issue using GitHub CLI.
@@ -27,7 +32,7 @@ def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
         int: The created issue number.
 
     Raises:
-        RuntimeError: If the issue number cannot be extracted from the command output.
+        IssueExtractionError: If the issue number cannot be extracted from the command output.
     """
     create_issue_command = [
         "gh",
@@ -51,7 +56,7 @@ def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
         logger.info("Issue created successfully with number %d", issue_number)
         return issue_number
     else:
-        raise RuntimeError("Failed to extract issue number from command output")
+        raise IssueExtractionError("Failed to extract issue number from command output")
 
 
 @validate_call(validate_return=True)
