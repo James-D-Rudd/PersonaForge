@@ -26,7 +26,7 @@ target-version = "py310"
 [tool.ruff.lint]
 # E/W: PEP8, F: Pyflakes, I: Isort, N: Naming, D: Docstrings (Google), 
 # ANN: Annotations, UP: Upgrades, B: Bugbear
-select = ["E", "W", "F", "I", "N", "D", "ANN", "UP", "B"]
+select = ["E", "W", "F", "I", "N", "D", "ANN", "UP", "B", "G"]
 ignore = []
 
 [tool.ruff.lint.pydocstyle]
