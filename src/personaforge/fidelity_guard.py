@@ -29,7 +29,7 @@ def close_issue(repo_info: models.RepoInfo, issue_number: int) -> None:
             f"https://github.com/{repo_info.owner}/{repo_info.repo}/issues/{issue_number}",
         ]
     )
-    logger.debug(f"Issue #{issue_number} closed successfully!")
+    logger.debug("Issue #%d closed successfully!", issue_number)
 
 
 @validate_call(validate_return=True)
@@ -44,7 +44,7 @@ def main(issue_number: int) -> None:
         Exception: If an error occurs while closing the issue.
     """
     repo_info = utils.get_owner_repo()
-    logger.info(f"Closing issue #{issue_number}")
+    logger.info("Closing issue #%d", issue_number)
     close_issue(repo_info, issue_number)
 
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             issue_number = int(sys.argv[1])
             main(issue_number)
         except Exception as e:
-            logger.exception(f"An error occurred: {e}")
+            logger.exception("An error occurred")
             raise
     else:
         logger.error("Usage: python fidelity_guard.py <issue_number>")

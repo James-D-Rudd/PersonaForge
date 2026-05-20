@@ -82,7 +82,7 @@ def main() -> None:
     logger.info("\n[Step 2] Running sanitizer.py")
     sanitizer.main(pr_info)
 
-    logger.info(f"\n[Step 3] Retrieving issues for PR #{pr_info.pr_number}")
+    logger.info("\n[Step 3] Retrieving issues for PR #%d", pr_info.pr_number)
     issue_numbers: list[int] = (
         get_issues_for_pr(pr_info.pr_number) if pr_info.pr_number else []
     )
@@ -91,7 +91,7 @@ def main() -> None:
     logger.info("\n[Step 4] Looping over issues and closing them")
 
     for issue_num in issue_numbers:
-        logger.debug(f"\n--- Processing Issue #{issue_num} ---")
+        logger.debug("\n--- Processing Issue #%d ---", issue_num)
         precision_refiner.main(issue_num, pr_info.branch_name)
 
     logger.info("\n" + "=" * 50)
@@ -103,5 +103,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        logger.exception(f"Error in __main__: {e}")
+        logger.exception("Error in __main__")
         raise

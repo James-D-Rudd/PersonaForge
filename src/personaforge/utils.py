@@ -22,9 +22,9 @@ def run_command(command: list[str]) -> str:
     Raises:
         subprocess.CalledProcessError: If the command execution fails.
     """
-    logger.info(f"Running command: {' '.join(command)}")
+    logger.info("Running command: %s", ' '.join(command))
     result = subprocess.run(command, check=True, capture_output=True, text=True)
-    logger.debug(f"Command '{' '.join(command)}' executed successfully.")
+    logger.debug("Command '%s' executed successfully.", ' '.join(command))
     return result.stdout.strip()
 
 
@@ -47,7 +47,7 @@ def get_owner_repo() -> models.RepoInfo:
     url_parts = url.split("/")
     owner = url_parts[0].split(":")[-1]
     repo = url_parts[-1].replace(".git", "")
-    logger.info(f"Retrieved owner: {owner}, repo: {repo}")
+    logger.info("Retrieved owner: %s, repo: %s", owner, repo)
     return models.RepoInfo(owner=owner, repo=repo)
 
 
@@ -64,7 +64,7 @@ def switch_to_branch(branch_name: str) -> str:
     Raises:
         subprocess.CalledProcessError: If the branch to checkout doesn't exist or if there is an error during the checkout process.
     """
-    logger.info(f"Switching to branch {branch_name}")
+    logger.info("Switching to branch %s", branch_name)
     current_branch = run_command(["git", "branch", "--show-current"])
 
     run_command(["git", "checkout", branch_name])

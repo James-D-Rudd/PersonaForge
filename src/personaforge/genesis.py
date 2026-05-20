@@ -69,7 +69,7 @@ def create_base_context_file() -> str:
     """
     filename = "mock_agent.yml"
 
-    logger.info(f"Creating mock file {filename}")
+    logger.info("Creating mock file %s", filename)
     utils.run_command(["touch", filename])
 
     logger.info("Adding and committing changes")
@@ -92,7 +92,7 @@ def get_pr_number(branch_name: str) -> int:
     Raises:
         RuntimeError: If the PR number cannot be retrieved.
     """
-    logger.info(f"Getting PR number for {branch_name}")
+    logger.info("Getting PR number for %s", branch_name)
     pr_output = utils.run_command(
         [
             "gh",
@@ -111,7 +111,7 @@ def get_pr_number(branch_name: str) -> int:
     if pr_number == 0:
         raise RuntimeError(f"Failed to create a PR for branch {branch_name}.")
 
-    logger.info(f"PR number is {pr_number}")
+    logger.info("PR number is %d", pr_number)
 
     return pr_number
 
@@ -126,7 +126,7 @@ def open_pr(branch_name: str) -> int:
     Returns:
         int: The pull request number.
     """
-    logger.info(f"Pushing branch {branch_name} to remote")
+    logger.info("Pushing branch %s to remote", branch_name)
     utils.run_command(["git", "push", "-u", "origin", branch_name])
     utils.run_command(
         [
@@ -187,5 +187,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        logger.exception(f"Error in __main__: {e}")
+        logger.exception("Error in __main__")
         raise

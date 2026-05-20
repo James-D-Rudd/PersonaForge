@@ -23,7 +23,7 @@ def main(issue_number: int, branch_name: str) -> None:
     current_branch = utils.switch_to_branch(branch_name)
 
     try:
-        logger.info(f"Closing issue #{issue_number}")
+        logger.info("Closing issue #%d", issue_number)
         fidelity_guard.main(issue_number)
 
     finally:
@@ -38,7 +38,7 @@ if __name__ == "__main__":
             branch_name = sys.argv[2]
             main(issue_number, branch_name)
         except ValueError as e:
-            logger.exception(f"Invalid issue number provided: {e}")
+            logger.exception("Invalid issue number provided")
             raise
     else:
         logger.error("Usage: python precision_refiner.py <issue_number> <branch_name>")

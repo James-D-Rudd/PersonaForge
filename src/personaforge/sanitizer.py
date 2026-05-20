@@ -46,7 +46,7 @@ def create_github_issue(repo_info: models.RepoInfo, issue: models.Issue) -> int:
     )
     if issue_number_match:
         issue_number = int(issue_number_match.group(1))
-        logger.info(f"Issue created successfully with number {issue_number}")
+        logger.info("Issue created successfully with number %d", issue_number)
         return issue_number
     else:
         raise RuntimeError("Failed to extract issue number from command output")
@@ -67,7 +67,7 @@ def create_all_github_issues(issues: list[models.Issue]) -> list[int]:
     for issue in issues:
         issue_number = create_github_issue(repo_info, issue)
         issue_numbers.append(issue_number)
-        logger.info(f"Created Issue #{issue_number}")
+        logger.info("Created Issue #%d", issue_number)
 
     return issue_numbers
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
             pr_info = models.PullRequestInfo.model_validate_json(sys.argv[1])
             main(pr_info)
         except ValueError as e:
-            logger.exception(f"Invalid branch name provided: {e}")
+            logger.exception("Invalid branch name provided")
             raise
     else:
         logger.error("Usage: python sanitizer.py <pr_info>")
