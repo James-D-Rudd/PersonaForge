@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 class IssueExtractionError(Exception):
     """Exception raised when issue number extraction fails."""
+
     pass
 
 

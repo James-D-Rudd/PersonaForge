@@ -33,7 +33,7 @@ def close_issue(repo_info: models.RepoInfo, issue_number: int) -> None:
 
 @validate_call(validate_return=True)
 def main(issue_number: int) -> None:
-    """Close an issue.
+    """Close a GitHub issue.
 
     Args:
         issue_number: The GitHub issue number to close.

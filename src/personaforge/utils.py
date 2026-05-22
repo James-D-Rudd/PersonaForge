@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 class GitOutputError(Exception):
     """Exception raised when git command output is unexpected."""
+
     pass
 
 

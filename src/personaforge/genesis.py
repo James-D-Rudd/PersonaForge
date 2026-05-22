@@ -15,11 +15,13 @@ MAX_ATTEMPTS = 10000
 
 class BranchGenerationError(Exception):
     """Exception raised when unique branch name cannot be generated."""
+
     pass
 
 
 class PRCreationError(Exception):
     """Exception raised when PR creation fails."""
+
     pass
 
 
