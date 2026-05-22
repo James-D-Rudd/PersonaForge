@@ -72,7 +72,12 @@ Evaluate every function, class, and module. Include ONLY sections that are seman
 ---
 
 ### Examples:
-* Condition: OPTIONAL. Include only when it materially improves clarity or demonstrates non-obvious usage.
+* Condition: OPTIONAL. Include an EXAMPLES section ONLY if the function meets at least one of the following criteria:
+  - Takes complex nested structures (e.g., dict of dicts, mixed lists) as an argument.
+  - Requires a specific string format/regex pattern (e.g., ISO dates, custom IDs).
+  - Employs tricky mathematical algorithms or edge-case handling (e.g., syncopated timing logic).
+  - Returns a composite or custom object structure that isn't immediately clear from the type signature.
+  Otherwise, omit the EXAMPLES section.
 * Must use `Examples:` (plural always).
 * Format:
   ```python
