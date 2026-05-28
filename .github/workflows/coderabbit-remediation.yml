@@ -1,0 +1,64 @@
+name: CodeRabbit Automatic Remediation
+
+on:
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  apply-fix:
+    # Only run if the comment came from the CodeRabbit bot account
+    if: github.event.comment.user.login == 'coderabbitai[bot]'
+    runs-on: ubuntu-latest
+    
+    # Give GitHub Actions permission to write back to your repository branch
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # 1. Check out the pull request's active branch
+      - name: Checkout PR Branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      # 2. Configure Git so Aider can create clean, attributed commits
+      - name: Configure Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 3. Setup Python environment
+      - name: Set up Python
+        uses: actions/setup-python@c8813ba1bc76ebf779b911ad8ffccbf2e449cb48
+        with:
+          python-level: '3.11'
+
+      # 4. Install Aider via pip
+      - name: Install Aider
+        run: |
+          python -m venv .venv
+          ./.venv/bin/pip install aider-chat
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+
+      # 5. Extract CodeRabbit data and execute Aider non-interactively
+      - name: Run Aider Remediation
+        env:
+          # Injecting your secure AI provider key from GitHub Secrets
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SUGGESTION: ${{ github.event.comment.body }}
+          FILE_PATH: "${{ github.event.comment.path }}"
+          CHANGE_LOG_FILE: "automated_changes.md"
+
+        run: |
+          aider "$FILE_PATH" \
+           --model poolside/laguna-m.1:free \
+           --message "$SUGGESTION" \
+           --yes-always
+
+      # 6. Push the modification back up to the active Pull Request
+      - name: Push Changes
+        run: |
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
