@@ -4,21 +4,20 @@
 # Extracts content between triple backticks after "Prompt for AI Agents"
 # Usage: parse_llm_instructions "$SUGGESTION"
 
-parse_llm_instructions() {
-    local content="$1"
+echo "$SUGGESTION"
+echo "this is a test"
 
-    echo "$content" | awk '
-        /<summary>🤖 Prompt for AI Agents<\/summary>/ { found=1; next }
-        found && /```/ { 
-            if (in_code_block) {
-                printf "%s", code_content
-                exit
-            } else {
-                in_code_block=1
-                code_content=""
-            }
-            next
+echo "$SUGGESTION" | awk '
+    /<summary>🤖 Prompt for AI Agents<\/summary>/ { found=1; next }
+    found && /```/ { 
+        if (in_code_block) {
+            printf "%s", code_content
+            exit
+        } else {
+            in_code_block=1
+            code_content=""
         }
-        in_code_block { code_content = code_content $0 "\n" }
-    '
-}
+        next
+    }
+    in_code_block { code_content = code_content $0 "\n" }
+'

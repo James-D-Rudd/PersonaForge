@@ -18,7 +18,7 @@ jobs:
     steps:
       # 1. Check out the pull request's active branch
       - name: Checkout PR Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
@@ -53,15 +53,17 @@ jobs:
           CHANGE_LOG_FILE: "automated_changes.md"
 
         run: |
-          # Parse the LLM instructions from the suggestion
-          LLM_INSTRUCTIONS=$(echo "$SUGGESTION" | .github/workflows/parse_llm_instructions.sh)
+          source .github/workflows/parse_llm_instructions.sh
+          LLM_INSTRUCTIONS=$(parse_llm_instructions "$SUGGESTION")
           
-          aider "$FILE_PATH" \
-           --model poolside/laguna-m.1:free \
-           --message "$LLM_INSTRUCTIONS" \
-           --yes-always
+          echo $LLM_INSTRUCTIONS
+          
+          # aider "$FILE_PATH" \
+          #  --model poolside/laguna-m.1:free \
+          #  --message "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE `$LLM_INSTRUCTIONS`" \
+          #  --yes-always
 
       # 6. Push the modification back up to the active Pull Request
-      - name: Push Changes
-        run: |
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+      # - name: Push Changes
+      #   run: |
+      #     git push origin HEAD:${{ github.event.pull_request.head.ref }}
