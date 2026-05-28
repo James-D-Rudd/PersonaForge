@@ -53,9 +53,12 @@ jobs:
           CHANGE_LOG_FILE: "automated_changes.md"
 
         run: |
+          # Parse the LLM instructions from the suggestion
+          LLM_INSTRUCTIONS=$(echo "$SUGGESTION" | .github/workflows/parse_llm_instructions.sh)
+          
           aider "$FILE_PATH" \
            --model poolside/laguna-m.1:free \
-           --message "$SUGGESTION" \
+           --message "$LLM_INSTRUCTIONS" \
            --yes-always
 
       # 6. Push the modification back up to the active Pull Request
