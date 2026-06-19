@@ -2,7 +2,7 @@
     "action": "created",
     "pull_request": {
         "number": 5,
-        "html_url": "https://github.com/James-D-Rudd/PersonaForge/pull/5",
+        "html_url": "https://github.com/James-D-Rudd/persona-forge/pull/5",
         "pull_request": {
             "head":{
                 "ref":"jdr/creates_pipeline_structure"
@@ -17,7 +17,7 @@
         }
     },
     "repository": {
-        "name": "PersonaForge",
+        "name": "persona-forge",
         "owner": {
             "login": "James-D-Rudd"
         }

@@ -1,1 +1,1 @@
-"""Test suite for PersonaForge."""
+"""Test suite for persona-forge."""

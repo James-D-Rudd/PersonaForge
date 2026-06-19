@@ -1,4 +1,4 @@
-"""Pydantic models for PersonaForge pipeline configuration."""
+"""Pydantic models for persona-forge pipeline configuration."""
 
 from pydantic import BaseModel
 

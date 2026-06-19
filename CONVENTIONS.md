@@ -1,4 +1,4 @@
-# PersonaForge: Core Development Conventions & Dual-Pass Engine
+# persona-forge: Core Development Conventions & Dual-Pass Engine
 
 ## 1. System Guardrails (Aider-Specific)
 * **Tone**: Be concise. No conversational filler. Do not explain code unless requested.

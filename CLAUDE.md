@@ -18,8 +18,8 @@ ruff check . && ruff format --check . && mypy . && pytest
 
 ---
 
-## 2. Architecture: PersonaForge
-**PersonaForge** is a planned GitHub workflow automation tool for creating and refining version controlled context files.
+## 2. Architecture: persona-forge
+**persona-forge** is a planned GitHub workflow automation tool for creating and refining version controlled context files.
 
 Infrastructure (pyproject.toml, pre-commit-config.yaml) is in place.
 

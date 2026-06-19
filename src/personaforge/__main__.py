@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Entry point for running PersonaForge as a module."""
+"""Entry point for running persona-forge as a module."""
 
 from personaforge.orchestrator import main
 

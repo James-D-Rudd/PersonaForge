@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "personaforge"
 version = "0.1.0"
-description = "PersonaForge project"
+description = "persona-forge project"
 authors = ["James-D-Rudd"]
 
 [tool.poetry.dependencies]

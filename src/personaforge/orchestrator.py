@@ -1,4 +1,4 @@
-"""Main orchestrator module for the PersonaForge workflow."""
+"""Main orchestrator module for the persona-forge workflow."""
 
 import logging
 import os

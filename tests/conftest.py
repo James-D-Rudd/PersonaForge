@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for PersonaForge tests."""
+"""Shared pytest fixtures for persona-forge tests."""
 
 import pytest
 from unittest import mock
