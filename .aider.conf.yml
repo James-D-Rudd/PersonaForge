@@ -1,4 +1,4 @@
-auto-commits: false
+auto-commits: true
 gitignore: false
 
 auto-lint: true

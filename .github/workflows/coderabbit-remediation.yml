@@ -55,14 +55,16 @@ jobs:
         run: |
           export SUGGESTION
           LLM_INSTRUCTIONS=$(bash .github/workflows/parse_llm_instructions.sh)
-          echo $LLM_INSTRUCTIONS
+          echo "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE '$LLM_INSTRUCTIONS'"
           
-          aider "$FILE_PATH $CHANGE_LOG_FILE" \
+          aider "$CHANGE_LOG_FILE" \
            --model ollama/qwen2.5-coder:14b \
-           --message "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE $LLM_INSTRUCTIONS" \
+           --message "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE '$LLM_INSTRUCTIONS'" \
            --yes-always
 
-           cat $CHANGE_LOG_FILE
+          echo "this is a tests"
+          cat $CHANGE_LOG_FILE
+          echo "test complete"
 
       # 6. Push the modification back up to the active Pull Request
       # - name: Push Changes
