@@ -34,7 +34,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@c8813ba1bc76ebf779b911ad8ffccbf2e449cb48
         with:
-          python-level: '3.11'
+          python-version: '3.11'
 
       # 4. Install Aider via pip
       - name: Install Aider
@@ -53,15 +53,16 @@ jobs:
           CHANGE_LOG_FILE: "automated_changes.md"
 
         run: |
-          source .github/workflows/parse_llm_instructions.sh
-          LLM_INSTRUCTIONS=$(parse_llm_instructions "$SUGGESTION")
-          
+          export SUGGESTION
+          LLM_INSTRUCTIONS=$(bash .github/workflows/parse_llm_instructions.sh)
           echo $LLM_INSTRUCTIONS
           
-          # aider "$FILE_PATH" \
-          #  --model poolside/laguna-m.1:free \
-          #  --message "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE `$LLM_INSTRUCTIONS`" \
-          #  --yes-always
+          aider "$FILE_PATH $CHANGE_LOG_FILE" \
+           --model ollama/qwen2.5-coder:14b \
+           --message "Take the following message and output how you'd make these changes by appending them to $CHANGE_LOG_FILE $LLM_INSTRUCTIONS" \
+           --yes-always
+
+           cat $CHANGE_LOG_FILE
 
       # 6. Push the modification back up to the active Pull Request
       # - name: Push Changes
