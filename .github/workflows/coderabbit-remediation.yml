@@ -67,6 +67,7 @@ jobs:
           echo "test complete"
 
       # 6. Push the modification back up to the active Pull Request
-      # - name: Push Changes
-      #   run: |
-      #     git push origin HEAD:${{ github.event.pull_request.head.ref }}
+      - name: Push Changes
+        run: |
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+

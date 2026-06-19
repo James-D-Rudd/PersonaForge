@@ -2,7 +2,12 @@
     "action": "created",
     "pull_request": {
         "number": 5,
-        "html_url": "https://github.com/James-D-Rudd/PersonaForge/pull/5"
+        "html_url": "https://github.com/James-D-Rudd/PersonaForge/pull/5",
+        "pull_request": {
+            "head":{
+                "ref":"jdr/creates_pipeline_structure"
+            }
+        }
     },
     "comment": {
         "body": "_⚠️ Potential issue_ | _🟠 Major_ | _⚡ Quick win_\n\n**Stop logging the full argv.**\n\nThis emits every command argument verbatim. Downstream `gh issue create` / `gh pr edit` flows pass generated titles and bodies through this helper, so those values will be persisted to logs. Log only the executable/subcommand or redact sensitive flags before emitting.\n\n<details>\n<summary>🧰 Tools</summary>\n\n<details>\n<summary>🪛 Ruff (0.15.13)</summary>\n\n[error] 30-30: `subprocess` call: check for execution of untrusted input\n\n(S603)\n\n</details>\n\n</details>\n\n<details>\n<summary>🤖 Prompt for AI Agents</summary>\n\n```\nVerify each finding against current code. Fix only still-valid issues, skip the\nrest with a brief reason, keep changes minimal, and validate.\n\nIn `@src/personaforge/utils.py` around lines 29 - 31, The current logging prints\nthe full command argv via logger.info/debug around the\nsubprocess.run(command...) which may leak sensitive/generated text; change these\nlogs to only emit the executable/subcommand (e.g., command[0] or '\n'.join(command[:2]) for subcommand), or sanitize/redact sensitive\nflags/arguments (detect flags like --body, --title, --description or values\nmatching large text and replace with \"[REDACTED]\") before logging; update the\nlogger.info(\"Running command: ...\") and logger.debug(\"Command ... executed\nsuccessfully.\") usages to use the sanitized command representation while leaving\nsubprocess.run(command, ...) unchanged.\n```\n\n</details>\n\n<!-- fingerprinting:phantom:medusa:grasshopper -->\n\n<!-- This is an auto-generated comment by CodeRabbit -->\n",
