@@ -1,0 +1,11 @@
+name: CI
+
+on:
+  -push:
+  -pull_request:
+
+jobs:
+  sonar:
+    uses: James-D-Rudd/ci-workflows/.github/workflows/sonar.yaml@v1
+  snyk:
+    uses: James-D-Rudd/ci-workflows/.github/workflows/snyk.yaml@v1

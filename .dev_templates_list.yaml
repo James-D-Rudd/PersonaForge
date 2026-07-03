@@ -1,0 +1,8 @@
+- ".pre-commit-config.yaml.j2"
+- "sonar-project.properties.j2"
+- ".snyk.j2"
+- ".coderabbit.yaml.j2"
+- ".github/dependabot.yaml.j2"
+- ".github/workflows/ci-on_comment.yaml.j2"
+- ".github/workflows/ci-on_push.yaml.j2"
+
