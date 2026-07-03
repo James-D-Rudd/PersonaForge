@@ -1,6 +1,0 @@
-auto-commits: true
-gitignore: false
-
-auto-lint: true
-
-read: [CONVENTIONS.md]
