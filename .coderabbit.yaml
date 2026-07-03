@@ -1,21 +1,15 @@
 knowledge_base:
   code_guidelines:
     enabled: true
-    filePatterns:
-      - ".aider/skills/skill_docs.md"
-
+    filePatterns:      - "~/.aider/skills/skill_docs.md"
 reviews:
   profile: "assertive"
   request_changes_workflow: false
   high_level_summary: true
-  path_filters:
-    - "!dist/**"
-    - "!node_modules/**"
-    - "src/**"
-  auto_review_all_branches: true
+  path_filters:    - "!dist/**"    - "!node_modules/**"    - "src/**"  auto_review_all_branches: false
   instructions: |
-    When reviewing docstrings, strictly adhere to the guidelines, voice, 
-    and formatting rules outlined in skills_docs.md. Do not flag patterns 
+    When reviewing docstrings, strictly adhere to the guidelines, voice,
+    and formatting rules outlined in skills_docs.md. Do not flag patterns
     that are permitted by that document.
 
 chat:

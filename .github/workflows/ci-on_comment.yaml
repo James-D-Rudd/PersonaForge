@@ -1,0 +1,14 @@
+name: CI on Comment
+
+on:
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  forward:
+    uses: James-D-Rudd/persona-forge/.github/workflows/review-router.yaml@v1
+    with:
+event_name: ${{ github.event_name }}
+      payload: ${{ toJson(github.event) }}
